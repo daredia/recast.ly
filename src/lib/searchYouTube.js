@@ -16,14 +16,12 @@ var searchYouTube = (options, callback) => {
     },
     contentType: 'application/JSON',
     success: (data) => {
-      console.log('successful GET. data.items:', data.items);
       callback(data.items);
     },
     error: () => {
       console.log('error on fetch');
     }
   }).done(() => {
-    console.log('done called');
   });
 };
 
