@@ -2,6 +2,7 @@ class App extends React.Component {
   constructor(props) {
     super(props);
 
+    // TODO: uncomment this out and get it to work
     // this.state = {
     //   videos: [],
     //   video: {}
@@ -19,7 +20,7 @@ class App extends React.Component {
       max: 5,
       key: window.YOUTUBE_API_KEY
     };
-    // debugger;
+    
     this.props.searchYouTube(options, (data) => {
       this.setState({
         videos: data,
@@ -35,12 +36,28 @@ class App extends React.Component {
     
   }
 
+  onUserInput(event, props) {
+    var options = {
+      query: 'kobe',
+      max: 5,
+      key: window.YOUTUBE_API_KEY
+    };
+
+    props.appInstance.props.searchYouTube(options, (data) => {
+      console.log('this', this);
+      this.appInstance.setState({
+        videos: data,
+        video: data[0]
+      });
+    });
+
+  }
 
 
   render() {
     return (
       <div>
-        <Nav />
+        <Nav appInstance={this} onUserInput={this.onUserInput}/>
         <div className="col-md-7">
           <VideoPlayer video={this.state.video}/>
         </div>
