@@ -2,21 +2,17 @@ class App extends React.Component {
   constructor(props) {
     super(props);
 
-    // TODO: uncomment this out and get it to work
-    // this.state = {
-    //   videos: [],
-    //   video: {}
-    // };
-
     this.state = {
-      videos: window.exampleVideoData,
-      video: window.exampleVideoData[0]
+      videos: [],
+      video: null
     };
+
+    
   }
 
   componentDidMount() {
     var options = {
-      query: 'lebron',
+      query: '',
       max: 5,
       key: window.YOUTUBE_API_KEY
     };
@@ -37,14 +33,20 @@ class App extends React.Component {
   }
 
   onUserInput(event, props) {
+    console.log('event:', event);
     var options = {
-      query: 'kobe',
+      query: event.target.value,
       max: 5,
       key: window.YOUTUBE_API_KEY
     };
 
-    props.appInstance.props.searchYouTube(options, (data) => {
-      console.log('this', this);
+    var searchDebounced = _.debounce(
+      props.appInstance.props.searchYouTube, 
+      500
+    );
+
+
+    searchDebounced(options, (data) => {
       this.appInstance.setState({
         videos: data,
         video: data[0]
